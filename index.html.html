@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FinQuiz — A Arena dos Juros</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #090e1a;
+    --bg2: #0d1525;
+    --bg3: #111d35;
+    --green: #00e676;
+    --green2: #00c853;
+    --red: #ff1744;
+    --gold: #ffd600;
+    --blue: #2979ff;
+    --cyan: #00e5ff;
+    --text: #e8eaf6;
+    --muted: #7986cb;
+    --border: rgba(41, 121, 255, 0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── TICKER ── */
+  .ticker {
+    background: var(--green);
+    color: #000;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-inner {
+    display: inline-block;
+    animation: ticker 30s linear infinite;
+  }
+  .ticker-inner span { margin: 0 32px; }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 60px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(9,14,26,0.92);
+    backdrop-filter: blur(12px);
+  }
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: var(--green);
+    text-shadow: 0 0 20px rgba(0,230,118,0.5);
+  }
+  .logo span { color: var(--text); }
+  nav a {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: color .2s;
+  }
+  nav a:hover { color: var(--green); }
+  .nav-links { display: flex; gap: 32px; }
+  .btn-nav {
+    background: var(--green);
+    color: #000;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border: none;
+    padding: 10px 22px;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .btn-nav:hover { background: var(--cyan); transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 40px;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(41,121,255,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(41,121,255,0.07) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridpulse 8s ease-in-out infinite;
+  }
+  @keyframes gridpulse {
+    0%,100% { opacity: .6; }
+    50%      { opacity: 1; }
+  }
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,230,118,0.12) 0%, transparent 70%);
+    pointer-events: none;
+    animation: float 6s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-20px); }
+  }
+  .hero-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--green);
+    border: 1px solid var(--green);
+    padding: 6px 16px;
+    margin-bottom: 24px;
+    display: inline-block;
+    animation: fadein .8s ease forwards;
+  }
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 12vw, 140px);
+    line-height: .9;
+    letter-spacing: 4px;
+    position: relative;
+    animation: fadein .8s .2s ease both;
+  }
+  .hero h1 .outline {
+    -webkit-text-stroke: 2px var(--green);
+    color: transparent;
+  }
+  .hero h1 .solid { color: var(--text); }
+  .hero-sub {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 500px;
+    line-height: 1.6;
+    margin: 20px auto 40px;
+    animation: fadein .8s .4s ease both;
+  }
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadein .8s .6s ease both;
+  }
+  .btn-primary {
+    background: var(--green);
+    color: #000;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border: none;
+    padding: 16px 36px;
+    cursor: pointer;
+    transition: all .25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.15);
+    transform: translateX(-100%);
+    transition: transform .3s;
+  }
+  .btn-primary:hover::after { transform: translateX(0); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,230,118,0.4); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 1px;
+    border: 1px solid var(--border);
+    padding: 16px 36px;
+    cursor: pointer;
+    transition: all .25s;
+  }
+  .btn-secondary:hover { border-color: var(--green); color: var(--green); }
+
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 64px;
+    animation: fadein .8s .8s ease both;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .stat { text-align: center; }
+  .stat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--green);
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 100px 60px; }
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--green);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 5vw, 64px);
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .section-sub {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 480px;
+    line-height: 1.7;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .how { background: var(--bg2); }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2px;
+    margin-top: 60px;
+  }
+  .step {
+    background: var(--bg3);
+    padding: 40px 32px;
+    border-top: 2px solid transparent;
+    transition: border-color .3s;
+    position: relative;
+  }
+  .step:hover { border-color: var(--green); }
+  .step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: rgba(0,230,118,0.12);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .step h3 {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .step p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  /* ── LEVELS ── */
+  .levels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 60px;
+  }
+  .level-card {
+    border: 1px solid var(--border);
+    padding: 28px 24px;
+    text-align: center;
+    transition: all .3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .level-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--c, var(--green));
+    transform: scaleX(0);
+    transition: transform .3s;
+  }
+  .level-card:hover::before { transform: scaleX(1); }
+  .level-card:hover { background: rgba(255,255,255,0.02); transform: translateY(-4px); }
+  .level-icon { font-size: 32px; margin-bottom: 12px; }
+  .level-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .level-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .level-xp {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--c, var(--green));
+    margin-top: 12px;
+    letter-spacing: 1px;
+  }
+
+  /* ── QUIZ SECTION ── */
+  #quiz-section {
+    background: var(--bg2);
+    position: relative;
+    overflow: hidden;
+  }
+  #quiz-section::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(41,121,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .quiz-wrap {
+    max-width: 780px;
+    margin: 60px auto 0;
+  }
+  /* Player setup */
+  .player-setup {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 40px;
+    margin-bottom: 32px;
+  }
+  .player-setup h3 {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--cyan);
+    margin-bottom: 20px;
+  }
+  .setup-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .input-field {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    padding: 12px 16px;
+    flex: 1;
+    min-width: 180px;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .input-field:focus { border-color: var(--green); }
+  select.input-field { cursor: pointer; }
+  /* Quiz card */
+  .quiz-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 40px;
+    display: none;
+  }
+  .quiz-card.active { display: block; }
+  .quiz-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .quiz-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 4px 12px;
+  }
+  .quiz-score-display {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--green);
+    letter-spacing: 2px;
+  }
+  .timer-bar-wrap {
+    height: 4px;
+    background: rgba(255,255,255,0.08);
+    margin-bottom: 28px;
+    position: relative;
+  }
+  .timer-bar {
+    height: 4px;
+    background: linear-gradient(90deg, var(--cyan), var(--green));
+    transition: width 1s linear;
+  }
+  .question-text {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 28px;
+    font-weight: 500;
+  }
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .option-btn {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 16px 20px;
+    text-align: left;
+    cursor: pointer;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--blue); background: rgba(41,121,255,0.08); }
+  .option-btn.correct { border-color: var(--green) !important; background: rgba(0,230,118,0.12) !important; color: var(--green); }
+  .option-btn.wrong   { border-color: var(--red)   !important; background: rgba(255,23,68,0.10)  !important; color: var(--red); }
+  .option-btn:disabled { cursor: default; }
+  .opt-letter {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    width: 22px; height: 22px;
+    border: 1px solid currentColor;
+    display: grid; place-items: center;
+    flex-shrink: 0;
+  }
+  /* Explanation */
+  .explanation {
+    background: rgba(0,230,118,0.06);
+    border-left: 3px solid var(--green);
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    display: none;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .explanation.show { display: block; }
+  .explanation strong { color: var(--green); font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 1px; }
+  .explanation .loading-dots::after {
+    content: '...';
+    animation: dots 1.2s steps(3) infinite;
+  }
+  @keyframes dots { 0% { content: '.'; } 33% { content: '..'; } 66% { content: '...'; } }
+  /* Result */
+  .result-panel {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 48px 40px;
+    text-align: center;
+    display: none;
+  }
+  .result-panel.show { display: block; }
+  .result-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+  .result-score {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    color: var(--green);
+    letter-spacing: 4px;
+    line-height: 1;
+  }
+  .result-level {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    margin: 12px 0 32px;
+  }
+  /* Ranking */
+  #ranking-section { background: var(--bg); }
+  .ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 48px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+  }
+  .ranking-table th {
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    text-align: left;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 400;
+  }
+  .ranking-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background .2s;
+  }
+  .ranking-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .rank-pos {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+  }
+  .rank-1 { color: var(--gold); }
+  .rank-2 { color: #b0bec5; }
+  .rank-3 { color: #a1887f; }
+  .rank-bar-wrap { background: rgba(255,255,255,0.06); height: 6px; width: 140px; }
+  .rank-bar { height: 6px; background: linear-gradient(90deg, var(--green), var(--cyan)); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer .logo { font-size: 20px; }
+  footer p { font-size: 12px; color: var(--muted); font-family: 'Space Mono', monospace; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    section { padding: 60px 24px; }
+    .options-grid { grid-template-columns: 1fr; }
+    footer { padding: 32px 24px; flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span>JUROS SIMPLES ↑</span><span>JUROS COMPOSTOS ↑↑</span><span>TAXA SELIC 10.5% a.a.</span><span>INVESTIMENTOS 📈</span><span>FINANCIAMENTOS 🏦</span><span>CDI 10.4% a.a.</span><span>MATEMÁTICA FINANCEIRA 🎓</span><span>QUIZ AO VIVO 🔴</span>
+    <span>JUROS SIMPLES ↑</span><span>JUROS COMPOSTOS ↑↑</span><span>TAXA SELIC 10.5% a.a.</span><span>INVESTIMENTOS 📈</span><span>FINANCIAMENTOS 🏦</span><span>CDI 10.4% a.a.</span><span>MATEMÁTICA FINANCEIRA 🎓</span><span>QUIZ AO VIVO 🔴</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">FIN<span>QUIZ</span></div>
+  <div class="nav-links">
+    <a onclick="scrollTo('#how')">COMO FUNCIONA</a>
+    <a onclick="scrollTo('#quiz-section')">JOGAR</a>
+    <a onclick="scrollTo('#ranking-section')">RANKING</a>
+  </div>
+  <button class="btn-nav" onclick="scrollTo('#quiz-section')">▶ JOGAR AGORA</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-badge">MATEMÁTICA FINANCEIRA GAMIFICADA</div>
+  <h1>
+    <span class="outline">FIN</span><br>
+    <span class="solid">QUIZ</span>
+  </h1>
+  <p class="hero-sub">A arena competitiva onde você domina juros, investimentos e financiamentos — e ainda sobe no ranking da turma.</p>
+  <div class="hero-ctas">
+    <button class="btn-primary" onclick="scrollTo('#quiz-section')">▶ ENTRAR NA ARENA</button>
+    <button class="btn-secondary" onclick="scrollTo('#how')">COMO FUNCIONA</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-val">3</div><div class="stat-label">TEMAS</div></div>
+    <div class="stat"><div class="stat-val">5</div><div class="stat-label">NÍVEIS</div></div>
+    <div class="stat"><div class="stat-val">∞</div><div class="stat-label">QUESTÕES</div></div>
+    <div class="stat"><div class="stat-val">IA</div><div class="stat-label">EXPLICAÇÕES</div></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="section-label">// MECÂNICAS</div>
+  <div class="section-title">COMO FUNCIONA</div>
+  <p class="section-sub">Um sistema de competição por pontos, níveis e ranking em tempo real.</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">01</div><h3>ESCOLHA O TEMA</h3><p>Juros Simples, Compostos, Investimentos ou Financiamentos. Cada tema tem questões de dificuldade crescente.</p></div>
+    <div class="step"><div class="step-num">02</div><h3>RESPONDA RÁPIDO</h3><p>Você tem 30 segundos por questão. Quanto mais rápido responder, mais pontos de bônus acumula.</p></div>
+    <div class="step"><div class="step-num">03</div><h3>APRENDA NA HORA</h3><p>Após cada resposta, a IA explica o raciocínio passo a passo — mesmo que você tenha acertado.</p></div>
+    <div class="step"><div class="step-num">04</div><h3>SUBA NO RANKING</h3><p>Seus pontos entram no placar ao vivo da turma. Dispute o topo e mostre quem manda na arena.</p></div>
+  </div>
+</section>
+
+<!-- LEVELS -->
+<section id="levels">
+  <div class="section-label">// PROGRESSÃO</div>
+  <div class="section-title">NÍVEIS DA ARENA</div>
+  <p class="section-sub">Cada ponto te aproxima do topo da hierarquia financeira.</p>
+  <div class="levels-grid">
+    <div class="level-card" style="--c:#78909c"><div class="level-icon">📋</div><div class="level-name">ESTAGIÁRIO</div><div class="level-desc">Você está chegando. Aprenda o básico dos juros.</div><div class="level-xp">0 — 199 XP</div></div>
+    <div class="level-card" style="--c:#42a5f5"><div class="level-icon">📊</div><div class="level-name">ANALISTA</div><div class="level-desc">Já entende de taxas e sabe calcular rendimentos.</div><div class="level-xp">200 — 499 XP</div></div>
+    <div class="level-card" style="--c:var(--green)"><div class="level-icon">💼</div><div class="level-name">GESTOR</div><div class="level-desc">Domina financiamentos e toma decisões complexas.</div><div class="level-xp">500 — 899 XP</div></div>
+    <div class="level-card" style="--c:var(--gold)"><div class="level-icon">🏦</div><div class="level-name">DIRETOR</div><div class="level-desc">Quase no topo. Estratégias avançadas de investimento.</div><div class="level-xp">900 — 1399 XP</div></div>
+    <div class="level-card" style="--c:var(--red)"><div class="level-icon">👑</div><div class="level-name">CEO DO MERCADO</div><div class="level-desc">Mestre absoluto da matemática financeira.</div><div class="level-xp">1400+ XP</div></div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz-section">
+  <div class="section-label">// ARENA AO VIVO</div>
+  <div class="section-title">JOGAR AGORA</div>
+  <p class="section-sub">Responda, aprenda e suba no ranking da turma.</p>
+
+  <div class="quiz-wrap">
+    <!-- Setup -->
+    <div class="player-setup" id="player-setup">
+      <h3>// IDENTIFIQUE-SE PARA ENTRAR NA ARENA</h3>
+      <div class="setup-row">
+        <input class="input-field" id="player-name" type="text" placeholder="SEU NOME" maxlength="20" />
+        <select class="input-field" id="topic-select">
+          <option value="juros_simples_compostos">Juros Simples e Compostos</option>
+          <option value="investimentos">Investimentos e Rendimentos</option>
+          <option value="financiamentos">Financiamentos e Empréstimos</option>
+        </select>
+        <button class="btn-primary" id="start-btn" onclick="startQuiz()">ENTRAR ▶</button>
+      </div>
+    </div>
+
+    <!-- Quiz card -->
+    <div class="quiz-card" id="quiz-card">
+      <div class="quiz-meta">
+        <div class="quiz-tag" id="quiz-tag">JUROS SIMPLES</div>
+        <div class="quiz-score-display">XP: <span id="score-display">0</span></div>
+      </div>
+      <div class="timer-bar-wrap"><div class="timer-bar" id="timer-bar" style="width:100%"></div></div>
+      <div class="question-text" id="question-text">Carregando questão...</div>
+      <div class="options-grid" id="options-grid"></div>
+      <div class="explanation" id="explanation"></div>
+      <button class="btn-primary" id="next-btn" onclick="nextQuestion()" style="display:none">PRÓXIMA QUESTÃO ▶</button>
+    </div>
+
+    <!-- Result -->
+    <div class="result-panel" id="result-panel">
+      <div class="result-title">RODADA CONCLUÍDA</div>
+      <div class="result-score" id="final-score">0</div>
+      <div class="result-level" id="final-level">// NÍVEL: ESTAGIÁRIO</div>
+      <div id="final-msg" style="color:var(--muted);font-size:14px;margin-bottom:32px;"></div>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn-primary" onclick="restartQuiz()">JOGAR DE NOVO ▶</button>
+        <button class="btn-secondary" onclick="scrollTo('#ranking-section')">VER RANKING</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RANKING -->
+<section id="ranking-section">
+  <div class="section-label">// PLACAR AO VIVO</div>
+  <div class="section-title">RANKING DA TURMA</div>
+  <p class="section-sub">Os melhores traders da arena. Você está aqui?</p>
+  <table class="ranking-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>JOGADOR</th>
+        <th>TEMA</th>
+        <th>XP</th>
+        <th>NÍVEL</th>
+        <th>PROGRESSO</th>
+      </tr>
+    </thead>
+    <tbody id="ranking-body">
+      <!-- seeded rows -->
+      <tr><td><span class="rank-pos rank-1">1</span></td><td>MARCOS A.</td><td style="color:var(--muted);font-size:11px">INVEST.</td><td style="color:var(--green);font-weight:700">1520</td><td style="color:var(--gold);font-size:11px;letter-spacing:1px">👑 CEO</td><td><div class="rank-bar-wrap"><div class="rank-bar" style="width:100%"></div></div></td></tr>
+      <tr><td><span class="rank-pos rank-2">2</span></td><td>ANA P.</td><td style="color:var(--muted);font-size:11px">JUROS</td><td style="color:var(--green);font-weight:700">1140</td><td style="color:var(--gold);font-size:11px;letter-spacing:1px">🏦 DIRETOR</td><td><div class="rank-bar-wrap"><div class="rank-bar" style="width:75%"></div></div></td></tr>
+      <tr><td><span class="rank-pos rank-3">3</span></td><td>PEDRO L.</td><td style="color:var(--muted);font-size:11px">FINANC.</td><td style="color:var(--green);font-weight:700">870</td><td style="color:var(--green);font-size:11px;letter-spacing:1px">💼 GESTOR</td><td><div class="rank-bar-wrap"><div class="rank-bar" style="width:57%"></div></div></td></tr>
+      <tr><td><span class="rank-pos">4</span></td><td>JULIA R.</td><td style="color:var(--muted);font-size:11px">INVEST.</td><td style="color:var(--green);font-weight:700">640</td><td style="color:var(--green);font-size:11px;letter-spacing:1px">💼 GESTOR</td><td><div class="rank-bar-wrap"><div class="rank-bar" style="width:42%"></div></div></td></tr>
+      <tr><td><span class="rank-pos">5</span></td><td>FELIPE S.</td><td style="color:var(--muted);font-size:11px">JUROS</td><td style="color:var(--green);font-weight:700">310</td><td style="color:var(--muted);font-size:11px;letter-spacing:1px">📊 ANALISTA</td><td><div class="rank-bar-wrap"><div class="rank-bar" style="width:20%"></div></div></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">FIN<span>QUIZ</span></div>
+  <p>MATEMÁTICA FINANCEIRA · GRADUAÇÃO · ARENA COMPETITIVA</p>
+  <p>POWERED BY IA ✦ CLAUDE</p>
+</footer>
+
+<script>
+// ── STATE ──
+const TOTAL_QUESTIONS = 7;
+const TIMER_SECONDS   = 30;
+
+const TOPIC_LABELS = {
+  juros_simples_compostos: 'JUROS SIMPLES/COMPOSTOS',
+  investimentos:           'INVESTIMENTOS',
+  financiamentos:          'FINANCIAMENTOS',
+};
+
+const LEVEL_THRESHOLDS = [
+  { min: 0,    name: 'ESTAGIÁRIO',    icon: '📋' },
+  { min: 200,  name: 'ANALISTA',      icon: '📊' },
+  { min: 500,  name: 'GESTOR',        icon: '💼' },
+  { min: 900,  name: 'DIRETOR',       icon: '🏦' },
+  { min: 1400, name: 'CEO DO MERCADO',icon: '👑' },
+];
+
+let state = {
+  player: '',
+  topic: '',
+  score: 0,
+  questionIndex: 0,
+  questions: [],
+  timerInterval: null,
+  timeLeft: TIMER_SECONDS,
+  answered: false,
+};
+
+// ── HELPERS ──
+function scrollTo(sel) {
+  document.querySelector(sel)?.scrollIntoView({ behavior: 'smooth' });
+}
+
+function getLevel(xp) {
+  let lv = LEVEL_THRESHOLDS[0];
+  for (const t of LEVEL_THRESHOLDS) if (xp >= t.min) lv = t;
+  return lv;
+}
+
+function maxXp() { return LEVEL_THRESHOLDS[LEVEL_THRESHOLDS.length - 1].min + 200; }
+
+// ── QUIZ FLOW ──
+async function startQuiz() {
+  const name = document.getElementById('player-name').value.trim();
+  if (!name) { alert('Digite seu nome para entrar na arena!'); return; }
+  const topic = document.getElementById('topic-select').value;
+
+  state.player = name;
+  state.topic  = topic;
+  state.score  = 0;
+  state.questionIndex = 0;
+  state.questions = [];
+
+  document.getElementById('player-setup').style.display = 'none';
+  document.getElementById('result-panel').classList.remove('show');
+  document.getElementById('quiz-tag').textContent = TOPIC_LABELS[topic];
+  document.getElementById('quiz-card').classList.add('active');
+  document.getElementById('score-display').textContent = 0;
+
+  await loadQuestion();
+}
+
+async function loadQuestion() {
+  state.answered = false;
+  clearInterval(state.timerInterval);
+
+  document.getElementById('question-text').textContent = 'Gerando questão...';
+  document.getElementById('options-grid').innerHTML = '';
+  document.getElementById('explanation').classList.remove('show');
+  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('timer-bar').style.width = '100%';
+
+  // Generate question via Claude API
+  const topicPrompts = {
+    juros_simples_compostos: 'juros simples e juros compostos (cálculo de montante, taxa, prazo, capital)',
+    investimentos:           'investimentos e rendimentos (rendimento de aplicações, comparação de investimentos, retorno)',
+    financiamentos:          'financiamentos e empréstimos (sistema SAC, sistema Price, parcelas, total pago)',
+  };
+
+  const prompt = `Você é um professor de matemática financeira para alunos de graduação. Gere UMA questão de múltipla escolha sobre: ${topicPrompts[state.topic]}.
+
+Questão número ${state.questionIndex + 1} de ${TOTAL_QUESTIONS}. Varie a dificuldade — as primeiras questões são mais simples, as últimas mais complexas.
+
+Responda APENAS em JSON válido (sem markdown, sem \`\`\`), no formato exato:
+{
+  "question": "texto da questão com dados numéricos realistas",
+  "options": ["A) ...", "B) ...", "C) ...", "D) ..."],
+  "correct": 0,
+  "explanation": "explicação passo a passo do raciocínio e cálculo, em português, de forma didática"
+}
+
+O campo "correct" é o índice (0-3) da opção correta. Inclua valores numéricos concretos na questão.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    });
+
+    const data = await res.json();
+    const raw  = data.content.map(b => b.text || '').join('');
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const q = JSON.parse(clean);
+
+    state.questions.push(q);
+    renderQuestion(q);
+    startTimer();
+  } catch (e) {
+    console.error(e);
+    document.getElementById('question-text').textContent = '⚠️ Erro ao carregar questão. Verifique sua conexão.';
+  }
+}
+
+function renderQuestion(q) {
+  document.getElementById('question-text').textContent = `${state.questionIndex + 1}/${TOTAL_QUESTIONS}  ${q.question}`;
+
+  const grid = document.getElementById('options-grid');
+  grid.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D'];
+
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span>${opt.replace(/^[A-D]\)\s*/, '')}`;
+    btn.onclick = () => selectOption(i, btn);
+    grid.appendChild(btn);
+  });
+}
+
+function startTimer() {
+  state.timeLeft = TIMER_SECONDS;
+  const bar = document.getElementById('timer-bar');
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+
+  setTimeout(() => {
+    bar.style.transition = `width ${TIMER_SECONDS}s linear`;
+    bar.style.width = '0%';
+  }, 50);
+
+  state.timerInterval = setInterval(() => {
+    state.timeLeft--;
+    if (state.timeLeft <= 0) {
+      clearInterval(state.timerInterval);
+      if (!state.answered) timeOut();
+    }
+  }, 1000);
+}
+
+function timeOut() {
+  state.answered = true;
+  const q = state.questions[state.questionIndex];
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+  btns[q.correct].classList.add('correct');
+  showExplanation(q, false);
+}
+
+async function selectOption(idx, btn) {
+  if (state.answered) return;
+  state.answered = true;
+  clearInterval(state.timerInterval);
+
+  const q       = state.questions[state.questionIndex];
+  const correct = idx === q.correct;
+  const btns    = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+
+  btn.classList.add(correct ? 'correct' : 'wrong');
+  btns[q.correct].classList.add('correct');
+
+  if (correct) {
+    const bonus = Math.floor(state.timeLeft * 2);
+    state.score += 100 + bonus;
+    document.getElementById('score-display').textContent = state.score;
+  }
+
+  showExplanation(q, correct);
+}
+
+function showExplanation(q, correct) {
+  const el = document.getElementById('explanation');
+  el.classList.add('show');
+  el.innerHTML = `<strong>${correct ? '✔ CORRETO' : '✘ RESPOSTA INCORRETA'}</strong><br><br>${q.explanation}`;
+  document.getElementById('next-btn').style.display = 'inline-block';
+}
+
+function nextQuestion() {
+  state.questionIndex++;
+  if (state.questionIndex >= TOTAL_QUESTIONS) {
+    endQuiz();
+  } else {
+    loadQuestion();
+  }
+}
+
+function endQuiz() {
+  clearInterval(state.timerInterval);
+  document.getElementById('quiz-card').classList.remove('active');
+
+  const lv = getLevel(state.score);
+  document.getElementById('final-score').textContent = state.score + ' XP';
+  document.getElementById('final-level').textContent = `// NÍVEL: ${lv.icon} ${lv.name}`;
+
+  const msgs = {
+    'ESTAGIÁRIO':     'Continue praticando! Cada questão é um passo a mais na sua jornada.',
+    'ANALISTA':       'Bom resultado! Você está dominando os fundamentos.',
+    'GESTOR':         'Impressionante! Você já pensa como um gestor financeiro.',
+    'DIRETOR':        'Excelente! Você está entre os melhores da turma.',
+    'CEO DO MERCADO': '🏆 Perfeito! Você domina a matemática financeira.',
+  };
+  document.getElementById('final-msg').textContent = msgs[lv.name] || '';
+  document.getElementById('result-panel').classList.add('show');
+
+  addToRanking(state.player, state.topic, state.score, lv);
+}
+
+function restartQuiz() {
+  document.getElementById('result-panel').classList.remove('show');
+  document.getElementById('player-setup').style.display = 'block';
+  document.getElementById('quiz-card').classList.remove('active');
+}
+
+// ── RANKING ──
+let rankingData = [
+  { name: 'MARCOS A.', topic: 'INVEST.',  score: 1520, level: '👑 CEO' },
+  { name: 'ANA P.',    topic: 'JUROS',    score: 1140, level: '🏦 DIRETOR' },
+  { name: 'PEDRO L.',  topic: 'FINANC.',  score: 870,  level: '💼 GESTOR' },
+  { name: 'JULIA R.',  topic: 'INVEST.',  score: 640,  level: '💼 GESTOR' },
+  { name: 'FELIPE S.', topic: 'JUROS',    score: 310,  level: '📊 ANALISTA' },
+];
+
+const TOPIC_SHORT = {
+  juros_simples_compostos: 'JUROS',
+  investimentos:           'INVEST.',
+  financiamentos:          'FINANC.',
+};
+
+function addToRanking(name, topic, score, lv) {
+  rankingData.push({
+    name: name.toUpperCase(),
+    topic: TOPIC_SHORT[topic] || topic,
+    score,
+    level: `${lv.icon} ${lv.name.split(' ')[0]}`,
+  });
+  rankingData.sort((a, b) => b.score - a.score);
+  renderRanking();
+  setTimeout(() => scrollTo('#ranking-section'), 500);
+}
+
+function renderRanking() {
+  const top = rankingData.slice(0, 10);
+  const maxScore = top[0]?.score || 1;
+  const posColors = ['rank-1','rank-2','rank-3'];
+
+  document.getElementById('ranking-body').innerHTML = top.map((r, i) => `
+    <tr>
+      <td><span class="rank-pos ${posColors[i]||''}">${i+1}</span></td>
+      <td>${r.name}</td>
+      <td style="color:var(--muted);font-size:11px">${r.topic}</td>
+      <td style="color:var(--green);font-weight:700">${r.score}</td>
+      <td style="color:var(--gold);font-size:11px;letter-spacing:1px">${r.level}</td>
+      <td><div class="rank-bar-wrap"><div class="rank-bar" style="width:${Math.round(r.score/maxScore*100)}%"></div></div></td>
+    </tr>
+  `).join('');
+}
+</script>
+</body>
+</html>
