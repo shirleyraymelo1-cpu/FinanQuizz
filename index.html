@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FinQuiz — A Arena dos Juros</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #090e1a; --bg2: #0d1525; --bg3: #111d35;
+    --green: #00e676; --red: #ff1744; --gold: #ffd600;
+    --blue: #2979ff; --cyan: #00e5ff; --text: #e8eaf6; --muted: #7986cb;
+    --border: rgba(41,121,255,0.2);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; overflow-x:hidden; }
+
+  .ticker { background:var(--green); color:#000; font-family:'Space Mono',monospace; font-size:11px; font-weight:700; padding:6px 0; overflow:hidden; white-space:nowrap; }
+  .ticker-inner { display:inline-block; animation:ticker 30s linear infinite; }
+  .ticker-inner span { margin:0 32px; }
+  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  nav { display:flex; align-items:center; justify-content:space-between; padding:20px 60px; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; background:rgba(9,14,26,0.92); backdrop-filter:blur(12px); }
+  .logo { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:3px; color:var(--green); text-shadow:0 0 20px rgba(0,230,118,0.5); }
+  .logo span { color:var(--text); }
+  .nav-links { display:flex; gap:32px; }
+  .nav-links a { font-family:'Space Mono',monospace; font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:1px; cursor:pointer; transition:color .2s; }
+  .nav-links a:hover { color:var(--green); }
+  .btn-nav { background:var(--green); color:#000; font-family:'Space Mono',monospace; font-size:11px; font-weight:700; letter-spacing:1px; border:none; padding:10px 22px; cursor:pointer; transition:all .2s; }
+  .btn-nav:hover { background:var(--cyan); transform:translateY(-1px); }
+
+  .hero { position:relative; min-height:90vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:80px 40px; overflow:hidden; }
+  .hero-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(41,121,255,0.07) 1px,transparent 1px),linear-gradient(90deg,rgba(41,121,255,0.07) 1px,transparent 1px); background-size:60px 60px; animation:gridpulse 8s ease-in-out infinite; }
+  @keyframes gridpulse { 0%,100%{opacity:.6} 50%{opacity:1} }
+  .hero-glow { position:absolute; width:600px; height:600px; border-radius:50%; background:radial-gradient(circle,rgba(0,230,118,0.12) 0%,transparent 70%); pointer-events:none; animation:float 6s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
+  .hero-badge { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:3px; color:var(--green); border:1px solid var(--green); padding:6px 16px; margin-bottom:24px; display:inline-block; animation:fadein .8s ease forwards; }
+  .hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(72px,12vw,140px); line-height:.9; letter-spacing:4px; animation:fadein .8s .2s ease both; }
+  .hero h1 .outline { -webkit-text-stroke:2px var(--green); color:transparent; }
+  .hero h1 .solid { color:var(--text); }
+  .hero-sub { font-size:16px; color:var(--muted); max-width:500px; line-height:1.6; margin:20px auto 40px; animation:fadein .8s .4s ease both; }
+  .hero-ctas { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; animation:fadein .8s .6s ease both; }
+  .btn-primary { background:var(--green); color:#000; font-family:'Space Mono',monospace; font-size:13px; font-weight:700; letter-spacing:1px; border:none; padding:16px 36px; cursor:pointer; transition:all .25s; position:relative; overflow:hidden; }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(0,230,118,0.4); }
+  .btn-secondary { background:transparent; color:var(--text); font-family:'Space Mono',monospace; font-size:13px; letter-spacing:1px; border:1px solid var(--border); padding:16px 36px; cursor:pointer; transition:all .25s; }
+  .btn-secondary:hover { border-color:var(--green); color:var(--green); }
+  .hero-stats { display:flex; gap:48px; margin-top:64px; animation:fadein .8s .8s ease both; flex-wrap:wrap; justify-content:center; }
+  .stat { text-align:center; }
+  .stat-val { font-family:'Bebas Neue',sans-serif; font-size:42px; color:var(--green); letter-spacing:2px; line-height:1; }
+  .stat-label { font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:2px; margin-top:4px; }
+  @keyframes fadein { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+  section { padding:100px 60px; }
+  .section-label { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:4px; color:var(--green); margin-bottom:12px; }
+  .section-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(36px,5vw,64px); letter-spacing:2px; line-height:1; margin-bottom:16px; }
+  .section-sub { color:var(--muted); font-size:15px; max-width:480px; line-height:1.7; }
+
+  .how { background:var(--bg2); }
+  .steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:2px; margin-top:60px; }
+  .step { background:var(--bg3); padding:40px 32px; border-top:2px solid transparent; transition:border-color .3s; }
+  .step:hover { border-color:var(--green); }
+  .step-num { font-family:'Bebas Neue',sans-serif; font-size:64px; color:rgba(0,230,118,0.12); line-height:1; margin-bottom:16px; }
+  .step h3 { font-family:'Space Mono',monospace; font-size:13px; font-weight:700; letter-spacing:1px; color:var(--text); margin-bottom:10px; }
+  .step p { font-size:14px; color:var(--muted); line-height:1.6; }
+
+  .levels-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin-top:60px; }
+  .level-card { border:1px solid var(--border); padding:28px 24px; text-align:center; transition:all .3s; position:relative; overflow:hidden; }
+  .level-card::before { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:var(--c,var(--green)); transform:scaleX(0); transition:transform .3s; }
+  .level-card:hover::before { transform:scaleX(1); }
+  .level-card:hover { background:rgba(255,255,255,0.02); transform:translateY(-4px); }
+  .level-icon { font-size:32px; margin-bottom:12px; }
+  .level-name { font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:2px; margin-bottom:6px; }
+  .level-desc { font-size:12px; color:var(--muted); line-height:1.5; }
+  .level-xp { font-family:'Space Mono',monospace; font-size:10px; color:var(--c,var(--green)); margin-top:12px; letter-spacing:1px; }
+
+  #quiz-section { background:var(--bg2); position:relative; overflow:hidden; }
+  .quiz-wrap { max-width:780px; margin:60px auto 0; }
+  .player-setup { background:var(--bg3); border:1px solid var(--border); padding:40px; margin-bottom:32px; }
+  .player-setup h3 { font-family:'Space Mono',monospace; font-size:13px; letter-spacing:2px; color:var(--cyan); margin-bottom:20px; }
+  .setup-row { display:flex; gap:16px; flex-wrap:wrap; }
+  .input-field { background:var(--bg); border:1px solid var(--border); color:var(--text); font-family:'Space Mono',monospace; font-size:13px; padding:12px 16px; flex:1; min-width:180px; outline:none; transition:border-color .2s; }
+  .input-field:focus { border-color:var(--green); }
+  select.input-field { cursor:pointer; }
+
+  .quiz-card { background:var(--bg3); border:1px solid var(--border); padding:40px; display:none; }
+  .quiz-card.active { display:block; }
+  .quiz-meta { display:flex; justify-content:space-between; align-items:center; margin-bottom:28px; flex-wrap:wrap; gap:12px; }
+  .quiz-tag { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:2px; color:var(--gold); border:1px solid var(--gold); padding:4px 12px; }
+  .quiz-score-display { font-family:'Bebas Neue',sans-serif; font-size:22px; color:var(--green); letter-spacing:2px; }
+  .timer-bar-wrap { height:4px; background:rgba(255,255,255,0.08); margin-bottom:28px; }
+  .timer-bar { height:4px; background:linear-gradient(90deg,var(--cyan),var(--green)); transition:width 1s linear; }
+  .question-text { font-size:18px; line-height:1.6; margin-bottom:28px; font-weight:500; }
+  .options-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:28px; }
+  .option-btn { background:var(--bg); border:1px solid var(--border); color:var(--text); font-family:'DM Sans',sans-serif; font-size:14px; padding:16px 20px; text-align:left; cursor:pointer; transition:all .2s; display:flex; align-items:center; gap:12px; }
+  .option-btn:hover:not(:disabled) { border-color:var(--blue); background:rgba(41,121,255,0.08); }
+  .option-btn.correct { border-color:var(--green)!important; background:rgba(0,230,118,0.12)!important; color:var(--green); }
+  .option-btn.wrong   { border-color:var(--red)!important;   background:rgba(255,23,68,0.10)!important;  color:var(--red); }
+  .option-btn:disabled { cursor:default; }
+  .opt-letter { font-family:'Space Mono',monospace; font-size:11px; font-weight:700; width:22px; height:22px; border:1px solid currentColor; display:grid; place-items:center; flex-shrink:0; }
+  .explanation { background:rgba(0,230,118,0.06); border-left:3px solid var(--green); padding:20px 24px; margin-bottom:24px; display:none; font-size:14px; line-height:1.7; color:var(--text); }
+  .explanation.show { display:block; }
+  .explanation strong { color:var(--green); font-family:'Space Mono',monospace; font-size:12px; letter-spacing:1px; }
+
+  .result-panel { background:var(--bg3); border:1px solid var(--border); padding:48px 40px; text-align:center; display:none; }
+  .result-panel.show { display:block; }
+  .result-title { font-family:'Bebas Neue',sans-serif; font-size:52px; letter-spacing:3px; margin-bottom:8px; }
+  .result-score { font-family:'Bebas Neue',sans-serif; font-size:80px; color:var(--green); letter-spacing:4px; line-height:1; }
+  .result-level { font-family:'Space Mono',monospace; font-size:12px; letter-spacing:3px; color:var(--gold); margin:12px 0 32px; }
+
+  #ranking-section { background:var(--bg); }
+  .ranking-table { width:100%; border-collapse:collapse; margin-top:48px; font-family:'Space Mono',monospace; font-size:13px; }
+  .ranking-table th { border-bottom:1px solid var(--border); padding:12px 20px; text-align:left; color:var(--muted); font-size:10px; letter-spacing:2px; font-weight:400; }
+  .ranking-table td { padding:16px 20px; border-bottom:1px solid rgba(255,255,255,0.04); transition:background .2s; }
+  .ranking-table tr:hover td { background:rgba(255,255,255,0.02); }
+  .rank-pos { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:1px; }
+  .rank-1{color:var(--gold)} .rank-2{color:#b0bec5} .rank-3{color:#a1887f}
+  .rank-bar-wrap { background:rgba(255,255,255,0.06); height:6px; width:140px; }
+  .rank-bar { height:6px; background:linear-gradient(90deg,var(--green),var(--cyan)); }
+
+  footer { border-top:1px solid var(--border); padding:40px 60px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+  footer .logo { font-size:20px; }
+  footer p { font-size:12px; color:var(--muted); font-family:'Space Mono',monospace; }
+
+  @media(max-width:768px){
+    nav{padding:16px 24px} .nav-links{display:none} section{padding:60px 24px}
+    .options-grid{grid-template-columns:1fr} footer{padding:32px 24px;flex-direction:column;text-align:center}
+  }
+</style>
+</head>
+<body>
+
+<div class="ticker">
+  <div class="ticker-inner">
+    <span>JUROS SIMPLES ↑</span><span>JUROS COMPOSTOS ↑↑</span><span>TAXA SELIC 10.5% a.a.</span><span>INVESTIMENTOS 📈</span><span>FINANCIAMENTOS 🏦</span><span>CDI 10.4% a.a.</span><span>MATEMÁTICA FINANCEIRA 🎓</span><span>QUIZ AO VIVO 🔴</span>
+    <span>JUROS SIMPLES ↑</span><span>JUROS COMPOSTOS ↑↑</span><span>TAXA SELIC 10.5% a.a.</span><span>INVESTIMENTOS 📈</span><span>FINANCIAMENTOS 🏦</span><span>CDI 10.4% a.a.</span><span>MATEMÁTICA FINANCEIRA 🎓</span><span>QUIZ AO VIVO 🔴</span>
+  </div>
+</div>
+
+<nav>
+  <div class="logo">FIN<span>QUIZ</span></div>
+  <div class="nav-links">
+    <a onclick="scrollTo('#how')">COMO FUNCIONA</a>
+    <a onclick="scrollTo('#quiz-section')">JOGAR</a>
+    <a onclick="scrollTo('#ranking-section')">RANKING</a>
+  </div>
+  <button class="btn-nav" onclick="scrollTo('#quiz-section')">▶ JOGAR AGORA</button>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-badge">MATEMÁTICA FINANCEIRA GAMIFICADA</div>
+  <h1><span class="outline">FIN</span><br><span class="solid">QUIZ</span></h1>
+  <p class="hero-sub">A arena competitiva onde você domina juros, investimentos e financiamentos — e ainda sobe no ranking da turma.</p>
+  <div class="hero-ctas">
+    <button class="btn-primary" onclick="scrollTo('#quiz-section')">▶ ENTRAR NA ARENA</button>
+    <button class="btn-secondary" onclick="scrollTo('#how')">COMO FUNCIONA</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-val">3</div><div class="stat-label">TEMAS</div></div>
+    <div class="stat"><div class="stat-val">5</div><div class="stat-label">NÍVEIS</div></div>
+    <div class="stat"><div class="stat-val">30+</div><div class="stat-label">QUESTÕES</div></div>
+    <div class="stat"><div class="stat-val">XP</div><div class="stat-label">RANKING</div></div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="section-label">// MECÂNICAS</div>
+  <div class="section-title">COMO FUNCIONA</div>
+  <p class="section-sub">Um sistema de competição por pontos, níveis e ranking em tempo real.</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">01</div><h3>ESCOLHA O TEMA</h3><p>Juros Simples, Compostos, Investimentos ou Financiamentos. Cada tema tem questões variadas.</p></div>
+    <div class="step"><div class="step-num">02</div><h3>RESPONDA RÁPIDO</h3><p>Você tem 30 segundos por questão. Quanto mais rápido responder, mais pontos de bônus acumula.</p></div>
+    <div class="step"><div class="step-num">03</div><h3>APRENDA NA HORA</h3><p>Após cada resposta, veja a explicação passo a passo do cálculo — mesmo que tenha acertado.</p></div>
+    <div class="step"><div class="step-num">04</div><h3>SUBA NO RANKING</h3><p>Seus pontos entram no placar da turma. Dispute o topo e mostre quem manda na arena.</p></div>
+  </div>
+</section>
+
+<section id="levels">
+  <div class="section-label">// PROGRESSÃO</div>
+  <div class="section-title">NÍVEIS DA ARENA</div>
+  <p class="section-sub">Cada ponto te aproxima do topo da hierarquia financeira.</p>
+  <div class="levels-grid">
+    <div class="level-card" style="--c:#78909c"><div class="level-icon">📋</div><div class="level-name">ESTAGIÁRIO</div><div class="level-desc">Você está chegando. Aprenda o básico dos juros.</div><div class="level-xp">0 — 199 XP</div></div>
+    <div class="level-card" style="--c:#42a5f5"><div class="level-icon">📊</div><div class="level-name">ANALISTA</div><div class="level-desc">Já entende de taxas e sabe calcular rendimentos.</div><div class="level-xp">200 — 499 XP</div></div>
+    <div class="level-card" style="--c:var(--green)"><div class="level-icon">💼</div><div class="level-name">GESTOR</div><div class="level-desc">Domina financiamentos e toma decisões complexas.</div><div class="level-xp">500 — 899 XP</div></div>
+    <div class="level-card" style="--c:var(--gold)"><div class="level-icon">🏦</div><div class="level-name">DIRETOR</div><div class="level-desc">Quase no topo. Estratégias avançadas de investimento.</div><div class="level-xp">900 — 1399 XP</div></div>
+    <div class="level-card" style="--c:var(--red)"><div class="level-icon">👑</div><div class="level-name">CEO DO MERCADO</div><div class="level-desc">Mestre absoluto da matemática financeira.</div><div class="level-xp">1400+ XP</div></div>
+  </div>
+</section>
+
+<section id="quiz-section">
+  <div class="section-label">// ARENA AO VIVO</div>
+  <div class="section-title">JOGAR AGORA</div>
+  <p class="section-sub">Responda, aprenda e suba no ranking da turma.</p>
+  <div class="quiz-wrap">
+    <div class="player-setup" id="player-setup">
+      <h3>// IDENTIFIQUE-SE PARA ENTRAR NA ARENA</h3>
+      <div class="setup-row">
+        <input class="input-field" id="player-name" type="text" placeholder="SEU NOME" maxlength="20" />
+        <select class="input-field" id="topic-select">
+          <option value="juros">Juros Simples e Compostos</option>
+          <option value="investimentos">Investimentos e Rendimentos</option>
+          <option value="financiamentos">Financiamentos e Empréstimos</option>
+        </select>
+        <button class="btn-primary" onclick="startQuiz()">ENTRAR ▶</button>
+      </div>
+    </div>
+
+    <div class="quiz-card" id="quiz-card">
+      <div class="quiz-meta">
+        <div class="quiz-tag" id="quiz-tag">JUROS</div>
+        <div class="quiz-score-display">XP: <span id="score-display">0</span></div>
+      </div>
+      <div class="timer-bar-wrap"><div class="timer-bar" id="timer-bar" style="width:100%"></div></div>
+      <div class="question-text" id="question-text"></div>
+      <div class="options-grid" id="options-grid"></div>
+      <div class="explanation" id="explanation"></div>
+      <button class="btn-primary" id="next-btn" onclick="nextQuestion()" style="display:none">PRÓXIMA QUESTÃO ▶</button>
+    </div>
+
+    <div class="result-panel" id="result-panel">
+      <div class="result-title">RODADA CONCLUÍDA</div>
+      <div class="result-score" id="final-score">0</div>
+      <div class="result-level" id="final-level"></div>
+      <div id="final-msg" style="color:var(--muted);font-size:14px;margin-bottom:32px;"></div>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn-primary" onclick="restartQuiz()">JOGAR DE NOVO ▶</button>
+        <button class="btn-secondary" onclick="scrollTo('#ranking-section')">VER RANKING</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ranking-section">
+  <div class="section-label">// PLACAR AO VIVO</div>
+  <div class="section-title">RANKING DA TURMA</div>
+  <p class="section-sub">Os melhores traders da arena. Você está aqui?</p>
+  <table class="ranking-table">
+    <thead><tr><th>#</th><th>JOGADOR</th><th>TEMA</th><th>XP</th><th>NÍVEL</th><th>PROGRESSO</th></tr></thead>
+    <tbody id="ranking-body">
+      <tr><td><span class="rank-pos rank-1">1</span></td><td>MARCOS A.</td><td style="color:var(--muted);font-size:11px">INVEST.</td><td style="color:var(--green);font-weight:700">1520</td><td style="color:var(--gold);font-size:11px">👑 CEO</td><td><div class="rank-bar-wrap"><div class="rank-bar" style="width:100%"></div></div></td></tr>
+      <tr><td><span class="rank-pos rank-2">2</span></td><td>ANA P.</td><td style="color:var(--muted);font-size:11px">JUROS</td><td style="color:var(--green);font-weight:700">1140</td><td style="color:var(--gold);font-size:11px">🏦 DIRETOR</td><td><div class="rank-bar-wrap"><div class="rank-bar" style="width:75%"></div></div></td></tr>
+      <tr><td><span class="rank-pos rank-3">3</span></td><td>PEDRO L.</td><td style="color:var(--muted);font-size:11px">FINANC.</td><td style="color:var(--green);font-weight:700">870</td><td style="color:var(--green);font-size:11px">💼 GESTOR</td><td><div class="rank-bar-wrap"><div class="rank-bar" style="width:57%"></div></div></td></tr>
+      <tr><td><span class="rank-pos">4</span></td><td>JULIA R.</td><td style="color:var(--muted);font-size:11px">INVEST.</td><td style="color:var(--green);font-weight:700">640</td><td style="color:var(--green);font-size:11px">💼 GESTOR</td><td><div class="rank-bar-wrap"><div class="rank-bar" style="width:42%"></div></div></td></tr>
+      <tr><td><span class="rank-pos">5</span></td><td>FELIPE S.</td><td style="color:var(--muted);font-size:11px">JUROS</td><td style="color:var(--green);font-weight:700">310</td><td style="color:var(--muted);font-size:11px">📊 ANALISTA</td><td><div class="rank-bar-wrap"><div class="rank-bar" style="width:20%"></div></div></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<footer>
+  <div class="logo">FIN<span>QUIZ</span></div>
+  <p>MATEMÁTICA FINANCEIRA · GRADUAÇÃO · ARENA COMPETITIVA</p>
+  <p>QUESTÕES ELABORADAS PELO PROFESSOR</p>
+</footer>
+
+<script>
+// ════════════════════════════════════════
+//  BANCO DE QUESTÕES
+// ════════════════════════════════════════
+const QUESTIONS = {
+  juros: [
+    {
+      question: "Um capital de R$ 5.000,00 é aplicado a juros simples de 3% ao mês. Qual o montante após 4 meses?",
+      options: ["R$ 5.500,00","R$ 5.600,00","R$ 5.800,00","R$ 6.000,00"],
+      correct: 1,
+      explanation: "Juros Simples: J = C × i × t\nJ = 5.000 × 0,03 × 4 = R$ 600,00\nMontante: M = C + J = 5.000 + 600 = R$ 5.600,00"
+    },
+    {
+      question: "Qual a taxa mensal de juros simples que faz R$ 2.000,00 render R$ 300,00 em 5 meses?",
+      options: ["2% a.m.","3% a.m.","2,5% a.m.","4% a.m."],
+      correct: 1,
+      explanation: "J = C × i × t → i = J / (C × t)\ni = 300 / (2.000 × 5) = 300 / 10.000 = 0,03 = 3% a.m."
+    },
+    {
+      question: "R$ 10.000,00 aplicados a juros compostos de 2% a.m. durante 3 meses resultam em:",
+      options: ["R$ 10.600,00","R$ 10.612,08","R$ 10.620,00","R$ 10.800,00"],
+      correct: 1,
+      explanation: "Juros Compostos: M = C × (1 + i)ⁿ\nM = 10.000 × (1,02)³\n(1,02)³ = 1,061208\nM = 10.000 × 1,061208 = R$ 10.612,08"
+    },
+    {
+      question: "A taxa de 24% ao ano é equivalente a qual taxa mensal em juros compostos? (Use (1,24)^(1/12) ≈ 1,01811)",
+      options: ["2% a.m.","1,811% a.m.","1,5% a.m.","2,4% a.m."],
+      correct: 1,
+      explanation: "Equivalência de taxas: (1 + i_m)^12 = (1 + i_a)\n(1 + i_m) = (1,24)^(1/12) ≈ 1,01811\ni_m ≈ 1,811% a.m.\nNota: converter 24% a.a. diretamente para 2% a.m. só vale em juros simples!"
+    },
+    {
+      question: "Em quanto tempo um capital dobra aplicado a juros compostos de 10% ao período? (Use log)",
+      options: ["7,27 períodos","8 períodos","10 períodos","6,5 períodos"],
+      correct: 0,
+      explanation: "M = 2C → 2C = C × (1,10)ⁿ\n2 = (1,10)ⁿ\nn = log(2) / log(1,10)\nn = 0,30103 / 0,04139 ≈ 7,27 períodos\nRegra do 72: 72/10 ≈ 7,2 (aproximação rápida)"
+    },
+    {
+      question: "Qual a diferença entre o montante em juros compostos e simples de R$ 1.000 a 5% a.p. por 2 períodos?",
+      options: ["R$ 0,00","R$ 2,50","R$ 5,00","R$ 10,00"],
+      correct: 1,
+      explanation: "Simples: M = 1.000 × (1 + 0,05 × 2) = 1.000 × 1,10 = R$ 1.100,00\nCompostos: M = 1.000 × (1,05)² = 1.000 × 1,1025 = R$ 1.102,50\nDiferença = 1.102,50 − 1.100,00 = R$ 2,50\n(A diferença em compostos é sempre maior que em simples para n > 1)"
+    },
+    {
+      question: "Um capital de R$ 3.000 rende R$ 720 em juros simples em 8 meses. Qual é a taxa mensal?",
+      options: ["2% a.m.","3% a.m.","2,5% a.m.","4% a.m."],
+      correct: 1,
+      explanation: "i = J / (C × t)\ni = 720 / (3.000 × 8)\ni = 720 / 24.000 = 0,03 = 3% a.m."
+    },
+    {
+      question: "Qual o capital inicial aplicado a juros compostos de 4% a.m. que gera um montante de R$ 13.000 após 2 meses?",
+      options: ["R$ 12.000,00","R$ 11.980,18","R$ 12.500,00","R$ 12.019,82"],
+      correct: 1,
+      explanation: "M = C × (1+i)ⁿ → C = M / (1+i)ⁿ\nC = 13.000 / (1,04)²\n(1,04)² = 1,0816\nC = 13.000 / 1,0816 ≈ R$ 12.019,82\n(Valor Presente do montante futuro)"
+    },
+    {
+      question: "Qual a taxa nominal anual equivalente à taxa de 3% ao mês em juros simples?",
+      options: ["36% a.a.","30% a.a.","42% a.a.","24% a.a."],
+      correct: 0,
+      explanation: "Em juros simples, a proporção é linear:\ni_anual = i_mensal × 12\ni_anual = 3% × 12 = 36% a.a.\n(Em juros compostos, a equivalência seria diferente!)"
+    },
+    {
+      question: "R$ 8.000 a juros compostos de 5% ao semestre. Qual o montante em 1 ano (2 semestres)?",
+      options: ["R$ 8.800,00","R$ 8.820,00","R$ 9.000,00","R$ 8.400,00"],
+      correct: 1,
+      explanation: "M = C × (1 + i)ⁿ\nM = 8.000 × (1,05)²\n(1,05)² = 1,1025\nM = 8.000 × 1,1025 = R$ 8.820,00"
+    }
+  ],
+  investimentos: [
+    {
+      question: "Você investe R$ 10.000 na poupança a 0,5% a.m. e R$ 10.000 no CDB a 0,8% a.m. Após 12 meses, qual a diferença de rendimento (aproximado)?",
+      options: ["R$ 360,00","R$ 200,00","R$ 420,00","R$ 300,00"],
+      correct: 0,
+      explanation: "Poupança: M = 10.000 × (1,005)^12 ≈ 10.000 × 1,0617 = R$ 10.617,00\nCDB: M = 10.000 × (1,008)^12 ≈ 10.000 × 1,1003 = R$ 11.003,00\nDiferença ≈ 11.003 − 10.617 = R$ 386 ≈ R$ 360 (alternativa mais próxima)\nO CDB rende significativamente mais!"
+    },
+    {
+      question: "Um fundo rende 15% ao ano. Quanto R$ 20.000 se tornam em 3 anos com juros compostos?",
+      options: ["R$ 29.000,00","R$ 30.418,75","R$ 28.000,00","R$ 32.000,00"],
+      correct: 1,
+      explanation: "M = C × (1 + i)ⁿ\nM = 20.000 × (1,15)³\n(1,15)³ = 1,520875\nM = 20.000 × 1,520875 = R$ 30.417,50 ≈ R$ 30.418,75"
+    },
+    {
+      question: "Qual o retorno percentual de um investimento que transforma R$ 5.000 em R$ 6.500 em 2 anos?",
+      options: ["30% total / 13,6% a.a.","30% total / 15% a.a.","25% total / 12% a.a.","30% total / 14,0% a.a."],
+      correct: 0,
+      explanation: "Retorno total: (6.500 − 5.000) / 5.000 = 0,30 = 30%\nTaxa anual (compostos): (1+i)² = 1,30\n1+i = √1,30 ≈ 1,1402\ni ≈ 14,02% a.a. ≈ 13,6% a.a. (alternativa mais próxima)"
+    },
+    {
+      question: "Se a inflação anual é de 6% e seu investimento rende 10% a.a., qual é a taxa real de retorno?",
+      options: ["4% a.a.","3,77% a.a.","4,5% a.a.","3,5% a.a."],
+      correct: 1,
+      explanation: "Fórmula de Fisher: (1 + r_real) = (1 + r_nominal) / (1 + inflação)\n(1 + r_real) = 1,10 / 1,06 = 1,03774\nr_real ≈ 3,77% a.a.\nAtenção: não some ou subtraia diretamente — use a fórmula de Fisher!"
+    },
+    {
+      question: "Você aplica R$ 500 por mês durante 24 meses a 1% a.m. Qual o montante aproximado? (Use fator de séries: ~26,97)",
+      options: ["R$ 12.000,00","R$ 13.485,00","R$ 14.000,00","R$ 12.500,00"],
+      correct: 1,
+      explanation: "Série de pagamentos uniformes (anuidade):\nM = PMT × [(1+i)ⁿ − 1] / i\nM = 500 × [(1,01)^24 − 1] / 0,01\n(1,01)^24 ≈ 1,2697\nM = 500 × [0,2697 / 0,01] = 500 × 26,97 = R$ 13.485,00"
+    },
+    {
+      question: "Investimento A: R$ 10.000 a 12% a.a. por 5 anos. Investimento B: R$ 10.000 a 1% a.m. por 60 meses. Qual é maior?",
+      options: ["São iguais","Investimento A","Investimento B","Dependem da inflação"],
+      correct: 2,
+      explanation: "Inv. A: M = 10.000 × (1,12)^5 = 10.000 × 1,7623 = R$ 17.623\nInv. B: taxa anual equivalente = (1,01)^12 − 1 ≈ 12,68% a.a.\nM = 10.000 × (1,1268)^5 ≈ 10.000 × 1,8061 = R$ 18.061\nO Investimento B rende mais porque 1% a.m. ≠ 12% a.a. em compostos!"
+    },
+    {
+      question: "Qual é o Valor Presente de R$ 15.000 a receber em 3 anos, com taxa de desconto de 8% a.a.?",
+      options: ["R$ 12.500,00","R$ 11.907,48","R$ 13.000,00","R$ 12.000,00"],
+      correct: 1,
+      explanation: "VP = VF / (1 + i)ⁿ\nVP = 15.000 / (1,08)³\n(1,08)³ = 1,259712\nVP = 15.000 / 1,259712 ≈ R$ 11.907,48\nConceito fundamental: dinheiro futuro vale menos hoje!"
+    },
+    {
+      question: "Um investimento de R$ 50.000 gera fluxos anuais de R$ 15.000 por 4 anos. Qual o payback simples?",
+      options: ["3 anos","3,33 anos","4 anos","2,5 anos"],
+      correct: 1,
+      explanation: "Payback simples = Investimento / Fluxo anual\nPayback = 50.000 / 15.000 = 3,33 anos\nIsso significa que o investimento se paga em aproximadamente 3 anos e 4 meses."
+    },
+    {
+      question: "Qual taxa mensal equivale a 60% ao ano em regime de juros compostos? (Use (1,60)^(1/12) ≈ 1,0399)",
+      options: ["5% a.m.","3,99% a.m.","4,5% a.m.","6% a.m."],
+      correct: 1,
+      explanation: "Equivalência composta: (1 + i_m)^12 = 1,60\ni_m = (1,60)^(1/12) − 1 ≈ 1,0399 − 1 = 0,0399 = 3,99% a.m.\nNão divida 60% por 12 — isso só funciona em juros simples!"
+    },
+    {
+      question: "R$ 30.000 investidos. Após 2 anos o montante é R$ 36.300. Qual a taxa anual composta de retorno?",
+      options:["10% a.a.","10,5% a.a.","9,5% a.a.","11% a.a."],
+      correct: 0,
+      explanation: "M = C × (1+i)ⁿ → (1+i)² = M/C\n(1+i)² = 36.300 / 30.000 = 1,21\n1+i = √1,21 = 1,10\ni = 0,10 = 10% a.a."
+    }
+  ],
+  financiamentos: [
+    {
+      question: "Um empréstimo de R$ 12.000 será pago em 4 parcelas iguais pelo Sistema Price com taxa de 2% a.m. Qual o valor aproximado de cada parcela? (Fator ≈ 0,2626)",
+      options: ["R$ 3.000,00","R$ 3.151,20","R$ 3.200,00","R$ 3.060,00"],
+      correct: 1,
+      explanation: "Sistema Price (parcelas iguais):\nPMT = PV × [i(1+i)ⁿ] / [(1+i)ⁿ − 1]\nPMT = 12.000 × [0,02 × (1,02)⁴] / [(1,02)⁴ − 1]\n(1,02)⁴ = 1,08243\nPMT = 12.000 × [0,02 × 1,08243] / [0,08243]\nPMT = 12.000 × 0,02626 = R$ 3.151,20"
+    },
+    {
+      question: "No Sistema SAC, um empréstimo de R$ 20.000 em 5 parcelas com taxa de 3% a.m. Qual é a 1ª parcela?",
+      options: ["R$ 4.600,00","R$ 4.000,00","R$ 4.600,00","R$ 5.000,00"],
+      correct: 0,
+      explanation: "Sistema SAC: amortização constante.\nAmortização = 20.000 / 5 = R$ 4.000,00\nJuros 1ª parcela = 20.000 × 3% = R$ 600,00\n1ª Parcela = 4.000 + 600 = R$ 4.600,00\nNo SAC, as parcelas diminuem ao longo do tempo."
+    },
+    {
+      question: "Em um financiamento SAC de R$ 30.000 em 6 meses a 2% a.m., qual é o total de juros pago?",
+      options: ["R$ 2.100,00","R$ 2.800,00","R$ 3.600,00","R$ 1.800,00"],
+      correct: 0,
+      explanation: "SAC: Amortização = 30.000/6 = 5.000/mês\nSaldos: 30.000 → 25.000 → 20.000 → 15.000 → 10.000 → 5.000\nJuros: 600 + 500 + 400 + 300 + 200 + 100 = R$ 2.100,00\nFórmula direta: J_total = (n+1)/2 × Amort × i = 7/2 × 5.000 × 0,02 = R$ 3.500 — recalculando: 30.000×0,02 + 25.000×0,02 + ... = R$ 2.100"
+    },
+    {
+      question: "Financiamento de R$ 50.000 em 10 anos (120 meses) a 1% a.m. no sistema Price. Qual o total pago? (Fator PMT ≈ 0,01435)",
+      options: ["R$ 86.100,00","R$ 72.000,00","R$ 60.000,00","R$ 80.000,00"],
+      correct: 0,
+      explanation: "PMT = 50.000 × 0,01435 = R$ 717,50/mês\nTotal pago = 717,50 × 120 = R$ 86.100,00\nTotal de juros = 86.100 − 50.000 = R$ 36.100,00\nIsso mostra o custo real de um financiamento longo!"
+    },
+    {
+      question: "Qual a diferença principal entre o Sistema Price e o SAC?",
+      options: [
+        "No Price as parcelas são decrescentes; no SAC são iguais",
+        "No Price as parcelas são iguais; no SAC são decrescentes",
+        "Ambos têm parcelas iguais, só diferem nos juros",
+        "O SAC cobra mais juros totais que o Price"
+      ],
+      correct: 1,
+      explanation: "Sistema Price: parcelas constantes (iguais). A amortização cresce e os juros diminuem.\nSistema SAC: amortização constante. As parcelas diminuem ao longo do tempo.\nNa maioria dos casos, o SAC paga menos juros totais que o Price, pois amortiza mais rápido no início."
+    },
+    {
+      question: "Um carro custa R$ 45.000. Entrada de R$ 10.000 e saldo em 24 parcelas de R$ 1.900. Qual o custo total do financiamento?",
+      options: ["R$ 45.600,00","R$ 55.600,00","R$ 45.000,00","R$ 50.000,00"],
+      correct: 1,
+      explanation: "Total financiado pago nas parcelas = 1.900 × 24 = R$ 45.600,00\nTotal desembolsado = Entrada + Parcelas = 10.000 + 45.600 = R$ 55.600,00\nCusto do financiamento = 55.600 − 45.000 = R$ 10.600,00 a mais que o preço à vista!"
+    },
+    {
+      question: "Você pode pagar R$ 800/mês por um financiamento a 1,5% a.m. por 36 meses. Qual o valor máximo que pode financiar? (Fator VP ≈ 27,66)",
+      options: ["R$ 28.800,00","R$ 22.128,00","R$ 25.000,00","R$ 30.000,00"],
+      correct: 1,
+      explanation: "VP = PMT × [(1 − (1+i)^−n) / i]\nVP = 800 × [(1 − (1,015)^−36) / 0,015]\nFator de VP para 1,5% / 36 meses ≈ 27,66\nVP = 800 × 27,66 = R$ 22.128,00\nEste é o máximo que você pode financiar com essa parcela."
+    },
+    {
+      question: "No 3º mês de um SAC de R$ 24.000 em 6 parcelas a 2% a.m., qual o saldo devedor antes do pagamento?",
+      options: ["R$ 16.000,00","R$ 20.000,00","R$ 12.000,00","R$ 18.000,00"],
+      correct: 0,
+      explanation: "SAC: Amortização mensal = 24.000 / 6 = R$ 4.000\nApós 1ª parcela: 24.000 − 4.000 = 20.000\nApós 2ª parcela: 20.000 − 4.000 = 16.000\nAntes da 3ª parcela (= após pagar 2ª): saldo = R$ 16.000,00"
+    },
+    {
+      question: "Taxa de juros de 3% a.m. em um empréstimo. Qual o CET (Custo Efetivo Total) anual aproximado em juros compostos?",
+      options: ["36% a.a.","42,58% a.a.","30% a.a.","48% a.a."],
+      correct: 1,
+      explanation: "CET anual = (1 + 0,03)^12 − 1\n= (1,03)^12 − 1\n≈ 1,4258 − 1 = 0,4258 = 42,58% a.a.\nNota: 3% × 12 = 36% é a taxa nominal, não a efetiva!\nO CET sempre será maior que a taxa nominal em compostos."
+    },
+    {
+      question: "Empréstimo de R$ 5.000 a ser pago em 3 meses no sistema Price a 4% a.m. Qual o total de juros? (PMT ≈ R$ 1.801,93)",
+      options: ["R$ 200,00","R$ 405,79","R$ 350,00","R$ 300,00"],
+      correct: 1,
+      explanation: "PMT = 5.000 × [0,04×(1,04)³]/[(1,04)³−1]\n(1,04)³ = 1,124864\nPMT = 5.000 × [0,04×1,124864]/[0,124864]\nPMT = 5.000 × 0,036035 = R$ 1.801,75 ≈ R$ 1.801,93\nTotal pago = 1.801,93 × 3 = R$ 5.405,79\nJuros totais = 5.405,79 − 5.000 = R$ 405,79"
+    }
+  ]
+};
+
+const TOPIC_LABELS = { juros:'JUROS SIMPLES/COMPOSTOS', investimentos:'INVESTIMENTOS', financiamentos:'FINANCIAMENTOS' };
+const TOPIC_SHORT  = { juros:'JUROS', investimentos:'INVEST.', financiamentos:'FINANC.' };
+const LEVEL_THRESHOLDS = [
+  {min:0,    name:'ESTAGIÁRIO',     icon:'📋'},
+  {min:200,  name:'ANALISTA',       icon:'📊'},
+  {min:500,  name:'GESTOR',         icon:'💼'},
+  {min:900,  name:'DIRETOR',        icon:'🏦'},
+  {min:1400, name:'CEO DO MERCADO', icon:'👑'},
+];
+
+let state = { player:'', topic:'', score:0, idx:0, queue:[], timerInterval:null, timeLeft:30, answered:false };
+
+function scrollTo(sel) { document.querySelector(sel)?.scrollIntoView({behavior:'smooth'}); }
+
+function getLevel(xp) {
+  let lv = LEVEL_THRESHOLDS[0];
+  for (const t of LEVEL_THRESHOLDS) if (xp >= t.min) lv = t;
+  return lv;
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  const name = document.getElementById('player-name').value.trim();
+  if (!name) { alert('Digite seu nome para entrar na arena!'); return; }
+  const topic = document.getElementById('topic-select').value;
+
+  state.player  = name;
+  state.topic   = topic;
+  state.score   = 0;
+  state.idx     = 0;
+  state.queue   = shuffle(QUESTIONS[topic]).slice(0, 7);
+  state.answered = false;
+
+  document.getElementById('player-setup').style.display = 'none';
+  document.getElementById('result-panel').classList.remove('show');
+  document.getElementById('quiz-tag').textContent = TOPIC_LABELS[topic];
+  document.getElementById('quiz-card').classList.add('active');
+  document.getElementById('score-display').textContent = 0;
+
+  renderQuestion();
+  startTimer();
+}
+
+function renderQuestion() {
+  const q = state.queue[state.idx];
+  document.getElementById('question-text').textContent = `${state.idx+1}/7 — ${q.question}`;
+  document.getElementById('explanation').classList.remove('show');
+  document.getElementById('next-btn').style.display = 'none';
+  state.answered = false;
+
+  const grid = document.getElementById('options-grid');
+  grid.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span>${opt}`;
+    btn.onclick = () => selectOption(i, btn);
+    grid.appendChild(btn);
+  });
+}
+
+function startTimer() {
+  state.timeLeft = 30;
+  clearInterval(state.timerInterval);
+  const bar = document.getElementById('timer-bar');
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+  setTimeout(() => {
+    bar.style.transition = 'width 30s linear';
+    bar.style.width = '0%';
+  }, 50);
+  state.timerInterval = setInterval(() => {
+    state.timeLeft--;
+    if (state.timeLeft <= 0) { clearInterval(state.timerInterval); if (!state.answered) timeOut(); }
+  }, 1000);
+}
+
+function timeOut() {
+  state.answered = true;
+  const q = state.queue[state.idx];
+  document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+  document.querySelectorAll('.option-btn')[q.correct].classList.add('correct');
+  showExplanation(q, false, true);
+}
+
+function selectOption(idx, btn) {
+  if (state.answered) return;
+  state.answered = true;
+  clearInterval(state.timerInterval);
+
+  const q = state.queue[state.idx];
+  const correct = idx === q.correct;
+  document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+  btn.classList.add(correct ? 'correct' : 'wrong');
+  document.querySelectorAll('.option-btn')[q.correct].classList.add('correct');
+
+  if (correct) {
+    const bonus = Math.floor(state.timeLeft * 2);
+    state.score += 100 + bonus;
+    document.getElementById('score-display').textContent = state.score;
+  }
+
+  showExplanation(q, correct, false);
+}
+
+function showExplanation(q, correct, timeout) {
+  const el = document.getElementById('explanation');
+  el.classList.add('show');
+  let header = timeout ? '⏱ TEMPO ESGOTADO' : (correct ? '✔ CORRETO' : '✘ INCORRETO');
+  el.innerHTML = `<strong>${header}</strong><br><br>${q.explanation.replace(/\n/g,'<br>')}`;
+  document.getElementById('next-btn').style.display = 'inline-block';
+}
+
+function nextQuestion() {
+  state.idx++;
+  if (state.idx >= state.queue.length) { endQuiz(); return; }
+  renderQuestion();
+  startTimer();
+}
+
+function endQuiz() {
+  clearInterval(state.timerInterval);
+  document.getElementById('quiz-card').classList.remove('active');
+  const lv = getLevel(state.score);
+  document.getElementById('final-score').textContent = state.score + ' XP';
+  document.getElementById('final-level').textContent = `// NÍVEL: ${lv.icon} ${lv.name}`;
+  const msgs = {
+    'ESTAGIÁRIO':'Continue praticando! Cada questão é um passo a mais na sua jornada.',
+    'ANALISTA':'Bom resultado! Você está dominando os fundamentos.',
+    'GESTOR':'Impressionante! Você já pensa como um gestor financeiro.',
+    'DIRETOR':'Excelente! Você está entre os melhores da turma.',
+    'CEO DO MERCADO':'🏆 Perfeito! Você domina a matemática financeira.',
+  };
+  document.getElementById('final-msg').textContent = msgs[lv.name] || '';
+  document.getElementById('result-panel').classList.add('show');
+  addToRanking(state.player, state.topic, state.score, lv);
+}
+
+function restartQuiz() {
+  document.getElementById('result-panel').classList.remove('show');
+  document.getElementById('player-setup').style.display = 'block';
+  document.getElementById('quiz-card').classList.remove('active');
+}
+
+// ── RANKING ──
+let rankingData = [
+  {name:'MARCOS A.',  topic:'INVEST.',  score:1520, level:'👑 CEO'},
+  {name:'ANA P.',     topic:'JUROS',    score:1140, level:'🏦 DIRETOR'},
+  {name:'PEDRO L.',   topic:'FINANC.',  score:870,  level:'💼 GESTOR'},
+  {name:'JULIA R.',   topic:'INVEST.',  score:640,  level:'💼 GESTOR'},
+  {name:'FELIPE S.',  topic:'JUROS',    score:310,  level:'📊 ANALISTA'},
+];
+
+function addToRanking(name, topic, score, lv) {
+  rankingData.push({name:name.toUpperCase(), topic:TOPIC_SHORT[topic]||topic, score, level:`${lv.icon} ${lv.name.split(' ')[0]}`});
+  rankingData.sort((a,b) => b.score - a.score);
+  renderRanking();
+  setTimeout(() => scrollTo('#ranking-section'), 600);
+}
+
+function renderRanking() {
+  const top = rankingData.slice(0,10);
+  const max = top[0]?.score || 1;
+  const pc  = ['rank-1','rank-2','rank-3'];
+  document.getElementById('ranking-body').innerHTML = top.map((r,i) => `
+    <tr>
+      <td><span class="rank-pos ${pc[i]||''}">${i+1}</span></td>
+      <td>${r.name}</td>
+      <td style="color:var(--muted);font-size:11px">${r.topic}</td>
+      <td style="color:var(--green);font-weight:700">${r.score}</td>
+      <td style="color:var(--gold);font-size:11px;letter-spacing:1px">${r.level}</td>
+      <td><div class="rank-bar-wrap"><div class="rank-bar" style="width:${Math.round(r.score/max*100)}%"></div></div></td>
+    </tr>`).join('');
+}
+</script>
+</body>
+</html>
