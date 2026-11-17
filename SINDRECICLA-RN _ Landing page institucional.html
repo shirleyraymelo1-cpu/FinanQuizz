@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SINDRECICLA-RN | Conexões que movimentam a reciclagem</title>
+<meta name="description" content="Sindicato das Indústrias de Reciclagem e Descartáveis do Rio Grande do Norte. Representação, projetos e conexões para fortalecer a indústria da reciclagem.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--g:#168D70;--gl:#43B99B;--t:#50A8AD;--p:#277F89;--bg:#fff;--soft:#F2F7F6;--ink:#0F2B2E;--mute:#4C6568;--line:#D5E4E1;--deep:#0F4B52;--on:#fff;
+--h:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;--b:'Instrument Sans','Segoe UI',system-ui,sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0C1D20;--soft:#112A2E;--ink:#E8F3F1;--mute:#9FB8B6;--line:#23424546;--deep:#0A3A40}}
+:root[data-theme="dark"]{--bg:#0C1D20;--soft:#112A2E;--ink:#E8F3F1;--mute:#9FB8B6;--line:#234245;--deep:#0A3A40}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:calc(76px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.05rem/1.65 var(--b);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--h);line-height:1.08;margin:0;letter-spacing:-.02em}
+h1{font-size:clamp(2.4rem,6.4vw,4.9rem);font-weight:700}h2{font-size:clamp(1.9rem,4.2vw,3.2rem);font-weight:700}h3{font-size:1.3rem;font-weight:700}
+p{margin:0}a{color:inherit}.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+section{padding:clamp(64px,10vw,128px) 0}.lead{color:var(--mute);max-width:56ch;margin-top:18px}
+:focus-visible{outline:3px solid var(--gl);outline-offset:3px;border-radius:6px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 26px;border-radius:999px;font:600 1rem var(--b);text-decoration:none;border:1.5px solid transparent;transition:transform .2s,background .2s,color .2s;cursor:pointer}
+.btn:hover{transform:translateY(-2px)}.b1{background:var(--g);color:#fff}.b1:hover{background:var(--p)}
+.b2{border-color:var(--ink);color:var(--ink)}.b2:hover{background:var(--ink);color:var(--bg)}
+.w1{background:#fff;color:var(--deep)}.w2{border-color:#ffffffaa;color:#fff}.w2:hover{background:#fff;color:var(--deep)}
+header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font:700 1.15rem var(--h)}
+.logo svg{width:34px;height:34px}.logo small{display:block;font:500 .62rem var(--b);color:var(--mute);letter-spacing:.02em;margin-top:-2px}
+nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;align-items:center}
+nav a{text-decoration:none;font-weight:500;font-size:.95rem;color:var(--mute)}nav a:hover{color:var(--g)}nav .btn{padding:10px 20px;color:#fff;font-size:.92rem}nav .btn:hover{color:#fff}
+#mb{display:none;background:none;border:1.5px solid var(--line);border-radius:10px;width:44px;height:44px;color:var(--ink);cursor:pointer}
+.hero{padding:clamp(40px,7vw,96px) 0 clamp(56px,8vw,110px);background:radial-gradient(900px 500px at 85% 10%,color-mix(in srgb,var(--gl) 22%,transparent),transparent 70%),var(--bg)}
+.hg{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.hero p.lead{font-size:1.18rem;margin:26px 0 34px}.acts{display:flex;gap:14px;flex-wrap:wrap}
+.orb{width:100%;max-width:520px;margin:0 auto;display:block;overflow:visible}
+.ring{transform-origin:260px 260px;animation:spin 60s linear infinite}.ring2{transform-origin:260px 260px;animation:spin 90s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.orb text{font:600 15px var(--b);fill:var(--ink)}
+.rise{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}.rise.d1{animation-delay:.12s}.rise.d2{animation-delay:.24s}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,90px);align-items:start}
+.about p+p{margin-top:18px}.about .txt{color:var(--mute)}
+.photo{position:relative;border-radius:22px;overflow:hidden;background:linear-gradient(135deg,var(--p),var(--g) 60%,var(--gl));min-height:220px;color:#fff;display:flex;align-items:flex-end;padding:18px}
+.photo::before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(circle at 80% 20%,#ffffff14 0 2px,transparent 2px 26px)}
+.photo span{position:relative;font:500 .8rem var(--b);background:#0F2B2Eb3;padding:5px 12px;border-radius:99px}
+.soft{background:var(--soft)}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:18px;margin-top:48px}
+.card{background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:12px;transition:transform .25s,border-color .25s}
+.card:hover{transform:translateY(-4px);border-color:var(--t)}.card p{color:var(--mute);font-size:.97rem}
+.card .tag{font:600 .8rem var(--b);color:var(--g);display:flex;align-items:center;gap:8px}.card .tag i{width:10px;height:10px;border-radius:50%;border:2.5px solid currentColor}
+.c-a{grid-column:span 3}.c-b{grid-column:span 2}.c-w{grid-column:span 6}.c-m{grid-column:span 2}.c-n{grid-column:span 4}
+.card.big{background:linear-gradient(140deg,var(--deep),var(--p));color:#fff;border:0}.card.big p{color:#e3f2f0}.card.big .tag{color:#9be6d2}
+.pill{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:48px;border-top:1px solid var(--line)}
+.pill div{padding:26px 22px 26px 0;border-bottom:1px solid var(--line)}.pill h3{font-size:1.1rem;margin-bottom:6px}.pill p{color:var(--mute);font-size:.94rem}
+.eco{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.nodes{display:grid;gap:14px}.node{display:flex;gap:18px;align-items:flex-start;padding:20px 22px;border:1px solid var(--line);border-radius:18px;background:var(--bg)}
+.node b{font:700 1.5rem var(--h);color:var(--g);min-width:84px}.node p{color:var(--mute);font-size:.96rem}
+.hl{margin-top:30px;padding-left:20px;border-left:4px solid var(--gl);font:500 1.15rem/1.5 var(--h)}
+.forum{background:var(--deep);color:#fff}.forum .lead{color:#c5e0dd}
+.fg{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.vals{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}.vals span{border:1px solid #ffffff55;border-radius:99px;padding:8px 18px;font-weight:500}
+.gal{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:150px;gap:14px;margin-top:44px}
+.gal .photo{min-height:0}.gal .g1{grid-column:span 2;grid-row:span 2}.gal .g2{grid-row:span 2}.gal .g3{grid-column:span 1}.gal .g5{grid-column:span 2}
+.gal .photo:nth-child(2n){background:linear-gradient(160deg,var(--t),var(--p))}.gal .photo:nth-child(3n){background:linear-gradient(120deg,var(--g),var(--deep))}
+.note{margin-top:16px;font-size:.88rem;color:var(--mute)}
+.cta{background:linear-gradient(135deg,var(--deep),var(--p));color:#fff;position:relative;overflow:hidden}
+.cta::after{content:"";position:absolute;right:-140px;top:-140px;width:460px;height:460px;border-radius:50%;border:70px solid #ffffff14}
+.cta .wrap{position:relative;z-index:1}.cta p{max-width:58ch;margin:22px 0 34px;color:#d6ece8;font-size:1.12rem}
+footer{padding:56px 0 40px;background:var(--soft)}.fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px}
+footer p,footer li{color:var(--mute);font-size:.95rem}footer ul{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}footer a{text-decoration:none}footer a:hover{color:var(--g)}
+footer h3{font-size:1rem}.copy{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);font-size:.85rem;color:var(--mute)}
+.wa{position:fixed;right:max(18px,env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:60;width:58px;height:58px;border-radius:50%;background:#25D366;display:grid;place-items:center;box-shadow:0 8px 24px #0004;transition:transform .2s}
+.wa:hover{transform:scale(1.08)}.wa svg{width:30px;height:30px;fill:#fff}
+@media(max-width:900px){.hg,.about,.eco,.fg,.fgrid{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.grid>*{grid-column:auto!important}
+.pill{grid-template-columns:1fr 1fr}.gal{grid-template-columns:1fr 1fr;grid-auto-rows:130px}.gal .g1{grid-column:span 2}
+#mb{display:grid;place-items:center}nav ul{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;gap:0;background:var(--bg);border-bottom:1px solid var(--line);padding:8px 24px 20px}
+nav ul.open{display:flex}nav li a{display:block;padding:12px 0}nav .btn{justify-content:center;margin-top:8px}.orb{max-width:380px}}
+@media(max-width:480px){.pill{grid-template-columns:1fr}.acts .btn{width:100%;justify-content:center}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav">
+<a class="logo" href="#topo" aria-label="SINDRECICLA-RN, início">
+<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4a16 16 0 0 1 13.9 8" fill="none" stroke="#168D70" stroke-width="5" stroke-linecap="round"/><path d="M34 26a16 16 0 0 1-14 10" fill="none" stroke="#50A8AD" stroke-width="5" stroke-linecap="round"/><path d="M12 32A16 16 0 0 1 6 14" fill="none" stroke="#43B99B" stroke-width="5" stroke-linecap="round"/></svg>
+<span>SINDRECICLA-RN<small>Reciclagem e Descartáveis</small></span></a>
+<nav aria-label="Principal"><button id="mb" aria-label="Abrir menu" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button>
+<ul id="menu"><li><a href="#quem-somos">Quem somos</a></li><li><a href="#projetos">Projetos</a></li><li><a href="#oportunidades">Oportunidades</a></li><li><a href="#fiern">Sistema FIERN</a></li><li><a href="#forum">Fórum</a></li><li><a class="btn b1 wa-link" data-msg="Olá! Quero conhecer o SINDRECICLA-RN e saber como associar minha empresa." href="#">Quero fazer parte</a></li></ul></nav>
+</div></header>
+
+<main id="topo">
+<section class="hero"><div class="wrap hg">
+<div>
+<h1 class="rise">Fortalecemos quem transforma resíduos em oportunidades.</h1>
+<p class="lead rise d1">O SINDRECICLA-RN conecta empresas, projetos e instituições para fortalecer a indústria da reciclagem e impulsionar o desenvolvimento sustentável no Rio Grande do Norte.</p>
+<div class="acts rise d2"><a class="btn b1" href="#projetos">Conheça nossas iniciativas</a><a class="btn b2 wa-link" data-msg="Olá! Quero fazer parte do SINDRECICLA-RN." href="#">Quero fazer parte</a></div>
+</div>
+<svg class="orb rise d1" viewBox="0 0 520 520" role="img" aria-label="Empresas, instituições, catadores e conhecimento conectados ao SINDRECICLA-RN">
+<g class="ring"><circle cx="260" cy="260" r="200" fill="none" stroke="#D5E4E1" stroke-width="1.5" stroke-dasharray="3 9"/>
+<path d="M260 60A200 200 0 0 1 433 160" fill="none" stroke="#168D70" stroke-width="26" stroke-linecap="round"/>
+<path d="M433 360A200 200 0 0 1 260 460" fill="none" stroke="#50A8AD" stroke-width="26" stroke-linecap="round"/>
+<path d="M87 360A200 200 0 0 1 87 160" fill="none" stroke="#43B99B" stroke-width="26" stroke-linecap="round"/></g>
+<g class="ring2"><circle cx="260" cy="260" r="138" fill="none" stroke="#277F89" stroke-width="1.5" opacity=".55"/><circle cx="260" cy="122" r="9" fill="#277F89"/><circle cx="379" cy="329" r="9" fill="#43B99B"/><circle cx="141" cy="329" r="9" fill="#50A8AD"/></g>
+<circle cx="260" cy="260" r="86" fill="#0F4B52"/><text x="260" y="256" text-anchor="middle" style="fill:#fff;font-size:17px;font-family:var(--h);font-weight:700">SINDRECICLA</text><text x="260" y="278" text-anchor="middle" style="fill:#9be6d2;font-size:14px">RN</text>
+<text x="260" y="30" text-anchor="middle">Empresas</text><text x="488" y="266" text-anchor="end" transform="rotate(0)">Instituições</text><text x="260" y="506" text-anchor="middle">Catadores</text><text x="32" y="266">Conhecimento</text>
+</svg>
+</div></section>
+
+<section id="quem-somos"><div class="wrap about">
+<div><h2>Representação que gera conexões. Conexões que geram oportunidades.</h2>
+<div class="photo" style="margin-top:36px;min-height:260px" role="img" aria-label="Espaço para foto institucional"><span>Foto institucional do setor (substituir)</span></div></div>
+<div class="txt"><p>O SINDRECICLA-RN representa as empresas da indústria da reciclagem no Rio Grande do Norte e atua na construção de oportunidades, parcerias e projetos que contribuem para o desenvolvimento sustentável e competitivo do setor.</p>
+<p>Mais do que representar a categoria, o sindicato conecta empresas, instituições, conhecimento e oportunidades, fortalecendo a cadeia da reciclagem e ampliando sua participação na economia circular.</p></div>
+</div></section>
+
+<section id="projetos" class="soft"><div class="wrap">
+<h2>Projetos que transformam o setor.</h2>
+<p class="lead">Conheça as iniciativas que aproximam empresas, fortalecem a cadeia da reciclagem e criam novas oportunidades.</p>
+<div class="grid">
+<article class="card big c-a"><span class="tag"><i></i>Gestão e ESG</span><h3>Selo Verde da Reciclagem</h3><p>Iniciativa voltada à gestão integrada, sustentabilidade e inteligência ESG para o setor de reciclagem. Busca estimular práticas mais responsáveis, fortalecer a imagem das empresas e contribuir para uma cadeia mais organizada, transparente e sustentável.</p></article>
+<article class="card c-b"><span class="tag"><i></i>Com o SEBRAE RN</span><h3>Pró-Catadores</h3><p>Ações de fortalecimento da cadeia da reciclagem, aproximando empresas, catadores e instituições e contribuindo para o desenvolvimento da atividade.</p></article>
+<article class="card c-b"><span class="tag"><i></i>Com o SESI RN</span><h3>Seja Pro+</h3><p>Desenvolvimento e qualificação de catadores, promovendo conhecimento, capacitação e melhores condições de atuação na cadeia da reciclagem.</p></article>
+<article class="card c-m"><span class="tag"><i></i>Mercados e tecnologias</span><h3>Missões empresariais e eventos</h3><p>Participação e promoção de missões, encontros, feiras e eventos que apresentam novos mercados, tecnologias, práticas e modelos de negócio.</p></article>
+<article class="card c-m"><span class="tag"><i></i>Rede</span><h3>Conexões estratégicas</h3><p>Aproximação entre as empresas do setor e instituições, parceiros e entidades, ampliando a rede de relacionamento e cooperação.</p></article>
+<article class="card c-m"><span class="tag"><i></i>Articulação</span><h3>Representação e defesa do setor</h3><p>Articulação institucional em defesa dos interesses das empresas, por políticas e condições favoráveis ao desenvolvimento da categoria.</p></article>
+<article class="card c-w" style="background:var(--bg)"><span class="tag"><i></i>Evento anual</span><h3>Fórum de Reciclagem de Resíduos Sólidos</h3><p style="max-width:80ch">Evento anual promovido pelo SINDRECICLA-RN que reúne empresas, instituições, especialistas e demais atores da cadeia para discutir desafios, oportunidades e caminhos para a reciclagem e a gestão de resíduos sólidos no Rio Grande do Norte. Um espaço de debate, conexão, troca de experiências e construção de soluções. <a href="#forum" style="color:var(--g);font-weight:600">Saiba mais</a></p></article>
+</div></div></section>
+
+<section id="oportunidades"><div class="wrap">
+<h2 style="max-width:20ch">Mais do que representação. Uma rede de oportunidades para sua empresa.</h2>
+<div class="pill">
+<div><h3>Representatividade institucional</h3><p>Sua empresa tem voz junto a instituições e ao poder público.</p></div>
+<div><h3>Defesa dos interesses do setor</h3><p>Articulação por condições favoráveis à categoria.</p></div>
+<div><h3>Conexões empresariais</h3><p>Aproximação com outras empresas e agentes da cadeia.</p></div>
+<div><h3>Parcerias estratégicas</h3><p>Relações com SEBRAE RN, SESI RN e outras instituições.</p></div>
+<div><h3>Capacitação e desenvolvimento</h3><p>Acesso a iniciativas de qualificação e conhecimento.</p></div>
+<div><h3>Inovação e sustentabilidade</h3><p>Práticas e tecnologias para uma reciclagem mais responsável.</p></div>
+<div><h3>Eventos e missões empresariais</h3><p>Participação em encontros, feiras e missões do setor.</p></div>
+<div><h3>Aproximação com instituições</h3><p>Portas abertas para novas oportunidades.</p></div>
+</div>
+<div style="margin-top:36px"><a class="btn b1 wa-link" data-msg="Olá! Quero saber mais sobre as vantagens de ser associado ao SINDRECICLA-RN." href="#">Quero saber como me associar</a></div>
+</div></section>
+
+<section id="fiern" class="soft"><div class="wrap eco">
+<div><h2>Uma rede de soluções para desenvolver sua empresa.</h2>
+<p class="lead">Além dos projetos próprios e das parcerias institucionais, o SINDRECICLA-RN aproxima suas empresas associadas das soluções do Sistema FIERN, ampliando oportunidades em áreas estratégicas para o desenvolvimento empresarial.</p>
+<p class="hl">A associação conecta sua empresa a uma rede que pode contribuir para qualificação, produtividade, gestão, inovação, segurança e competitividade.</p></div>
+<div class="nodes">
+<div class="node"><b>SESI</b><p>Saúde, segurança do trabalho, educação e qualidade de vida.</p></div>
+<div class="node" style="margin-left:clamp(0px,4vw,48px)"><b>SENAI</b><p>Qualificação profissional, tecnologia, inovação, consultorias e desenvolvimento de processos.</p></div>
+<div class="node"><b>IEL</b><p>Talentos, estágio, jovem aprendiz, gestão, liderança e educação executiva.</p></div>
+</div></div></section>
+
+<section id="forum" class="forum"><div class="wrap fg">
+<div><h2>Um espaço para conectar ideias e construir soluções.</h2>
+<p class="lead">Promovido anualmente pelo SINDRECICLA-RN, o Fórum reúne empresas, instituições, especialistas e demais atores da cadeia para discutir os desafios e as oportunidades da reciclagem e da gestão de resíduos sólidos.</p>
+<div class="vals"><span>Conhecimento</span><span>Networking</span><span>Troca de experiências</span><span>Debate</span><span>Construção de soluções</span></div></div>
+<div class="photo" style="min-height:340px" role="img" aria-label="Espaço para foto do Fórum"><span>Foto oficial do Fórum (substituir)</span></div>
+</div></section>
+
+<section><div class="wrap">
+<h2>Nossa atuação na prática.</h2>
+<div class="gal">
+<div class="photo g1"><span>Reuniões institucionais</span></div><div class="photo g3"><span>Eventos</span></div><div class="photo g2"><span>Missões empresariais</span></div>
+<div class="photo"><span>Visitas empresariais</span></div><div class="photo g5"><span>Capacitações e projetos</span></div><div class="photo"><span>Encontros com parceiros</span></div>
+</div>
+<p class="note">Espaços demonstrativos, prontos para receber as fotografias oficiais do sindicato (troque cada bloco por uma tag &lt;img&gt;).</p>
+</div></section>
+
+<section class="cta" id="associe-se"><div class="wrap">
+<h2 style="max-width:18ch">Sua empresa também pode fazer parte dessa transformação.</h2>
+<p>Fortalecer a indústria da reciclagem exige representação, conhecimento, conexões e oportunidades. Faça parte do SINDRECICLA-RN e aproxime sua empresa de uma rede que trabalha pelo desenvolvimento do setor.</p>
+<div class="acts"><a class="btn w1 wa-link" data-msg="Olá! Quero ser um associado do SINDRECICLA-RN." href="#">Quero ser um associado</a><a class="btn w2 wa-link" data-msg="Olá! Gostaria de falar com o SINDRECICLA-RN." href="#">Fale com o sindicato</a></div>
+</div></section>
+</main>
+
+<footer><div class="wrap"><div class="fgrid">
+<div><a class="logo" href="#topo"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4a16 16 0 0 1 13.9 8" fill="none" stroke="#168D70" stroke-width="5" stroke-linecap="round"/><path d="M34 26a16 16 0 0 1-14 10" fill="none" stroke="#50A8AD" stroke-width="5" stroke-linecap="round"/><path d="M12 32A16 16 0 0 1 6 14" fill="none" stroke="#43B99B" stroke-width="5" stroke-linecap="round"/></svg>SINDRECICLA-RN</a>
+<p style="margin-top:14px">Sindicato das Indústrias de Reciclagem e Descartáveis do Estado do Rio Grande do Norte.</p>
+<p style="margin-top:8px">Conexões que movimentam a reciclagem.</p></div>
+<div><h3>Contato</h3><ul><li><a href="https://www.instagram.com/sindreciclarn" rel="noopener">Instagram @sindreciclarn</a></li><li><a href="https://sindreciclarn.com.br/" rel="noopener">sindreciclarn.com.br</a></li><li><a class="wa-link" data-msg="Olá! Gostaria de falar com o SINDRECICLA-RN." href="#">WhatsApp</a></li><li id="f-mail" hidden></li><li id="f-tel" hidden></li><li id="f-end" hidden></li></ul></div>
+<div><h3>Navegue</h3><ul><li><a href="#projetos">Projetos</a></li><li><a href="#fiern">Sistema FIERN</a></li><li><a href="#forum">Fórum de Reciclagem</a></li><li><a href="#associe-se">Associe-se</a></li></ul></div>
+</div><p class="copy">© <span id="ano"></span> SINDRECICLA-RN. Todos os direitos reservados.</p></div></footer>
+
+<a class="wa wa-link" data-msg="Olá! Gostaria de falar com o SINDRECICLA-RN." href="#" aria-label="Conversar pelo WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.300 1.200-1.800 1.200-.5.100-1.100.1-1.800-.1-.4-.1-1-.3-1.700-.6-3-1.300-4.900-4.300-5-4.500-.1-.2-1.200-1.600-1.200-3s.8-2.100 1-2.400c.3-.3.600-.3.800-.3h.6c.2 0 .4 0 .6.500l.9 2.100c.1.200.1.400 0 .5l-.4.600-.3.400c-.1.200-.3.300-.1.600.2.300.8 1.300 1.700 2.100 1.200 1 2.100 1.300 2.400 1.500.3.100.5.100.6-.1l.9-1.100c.2-.3.400-.2.700-.1l2 1c.3.100.5.200.5.300.1.100.1.600-.1 1.200Z"/></svg></a>
+
+<script>
+/* CONFIGURAÇÃO: edite aqui o número (formato 55 + DDD + número, só dígitos) e os dados de contato */
+const CONFIG={whatsapp:"",email:"",telefone:"",endereco:""};
+document.querySelectorAll(".wa-link").forEach(a=>{
+ const t=encodeURIComponent(a.dataset.msg||"Olá!");
+ a.href="https://wa.me/"+(CONFIG.whatsapp||"")+"?text="+t;a.target="_blank";a.rel="noopener";
+});
+[["f-mail",CONFIG.email],["f-tel",CONFIG.telefone],["f-end",CONFIG.endereco]].forEach(([id,v])=>{if(v){const e=document.getElementById(id);e.textContent=v;e.hidden=false}});
+document.getElementById("ano").textContent=new Date().getFullYear();
+const mb=document.getElementById("mb"),mn=document.getElementById("menu");
+mb.addEventListener("click",()=>{const o=mn.classList.toggle("open");mb.setAttribute("aria-expanded",o)});
+mn.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{mn.classList.remove("open");mb.setAttribute("aria-expanded","false")}));
+</script>
+</body>
+</html>
